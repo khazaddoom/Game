@@ -13,6 +13,8 @@ var scores, roundScore, activePlayer, dice;
 
 gameInitilize();
 
+document.getElementById('dice-roll').addEventListener('click', rollTheDice);
+
 function gameInitilize() {
     scores = [0, 0];
     roundScore = 0;
@@ -66,16 +68,11 @@ function rollTheDice() {
 function addClassActive(activePlayer) {
 
     document.getElementById('player-' + activePlayer).classList.add("active");
-    //document.getElementById('player-' + activePlayer).classList.remove("active");
-
 }
 
 function removeClassActive(activePlayer) {
 
     document.getElementById('player-' + activePlayer).classList.remove("active");
-    //document.getElementById('player-' + activePlayer).classList.remove("active");
 
 }
 
-
-document.getElementById('dice-roll').addEventListener('click', rollTheDice);
