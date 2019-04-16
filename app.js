@@ -11,37 +11,71 @@ GAME RULES:
 
 var scores, roundScore, activePlayer, dice;
 
-scores = [0, 0];
-roundScore = 0;
-activePlayer = 0;//0 - First Player, 1 - Second Player
+gameInitilize();
+
+function gameInitilize() {
+    scores = [0, 0];
+    roundScore = 0;
+    activePlayer = 0;//0 - First Player, 1 - Second Player
+
+    document.querySelector('.dice').style.display = 'none';
+
+    //Current Scores to 0
+    document.querySelector('#current-0').textContent = 0;
+    document.querySelector('#current-1').textContent = 0;
+
+    //Global Scores to 0
+    document.querySelector('#score-0').textContent = 0;
+    document.querySelector('#score-1').textContent = 0;
+
+}
 
 function rollTheDice() {
 
     dice = Math.floor(Math.random() * 6) + 1;
 
-    document.querySelector('#current-' + activePlayer).textContent = dice;
-    document.querySelector('.dice').src = 'dice-' + dice + '.png';
-
     if (dice === 6 && activePlayer === 0) {
-
+        removeClassActive(activePlayer);
+        document.querySelector('.dice').style.display = 'none'
         document.querySelector('#current-' + activePlayer).textContent = 0;
         activePlayer = 1;
-        toggleClass(activePlayer)
+        roundScore = 0;
+        addClassActive(activePlayer);
 
     } else if (dice === 6 && activePlayer === 1){
-
+        removeClassActive(activePlayer);
+        document.querySelector('.dice').style.display = 'none';
         document.querySelector('#current-' + activePlayer).textContent = 0;
         activePlayer = 0;
-        toggleClass(activePlayer)
-    } 
-       
+        roundScore = 0;
+        addClassActive(activePlayer);
+
+    } else {
+
+        roundScore += dice;
+        document.querySelector('.dice').style.display = 'block';
+        document.querySelector('#current-' + activePlayer).textContent = roundScore;
+        document.querySelector('.dice').src = 'dice-' + dice + '.png';
+
+    }
+
+    
+    
+}
+
+function addClassActive(activePlayer) {
+
+    document.getElementById('player-' + activePlayer).classList.add("active");
+    //document.getElementById('player-' + activePlayer).classList.remove("active");
 
 }
 
-function toggleClass(activePlayer) {
+function removeClassActive(activePlayer) {
 
-    document.getElementsByClassName('player-' + activePlayer + '-panel').classList.remove("active");
+    document.getElementById('player-' + activePlayer).classList.remove("active");
+    //document.getElementById('player-' + activePlayer).classList.remove("active");
 
 }
+
 
 document.getElementById('dice-roll').addEventListener('click', rollTheDice);
