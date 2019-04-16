@@ -15,6 +15,6 @@ scores = [0, 0];
 roundScore = 0;
 activePlayer = 0;//0 - First Player, 1 - Second Player
 
-dice = Math.floor(Math.random() * 6);
+dice = Math.floor(Math.random() * 6) + 1;
 
 //console.log(dice)
