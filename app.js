@@ -15,6 +15,33 @@ scores = [0, 0];
 roundScore = 0;
 activePlayer = 0;//0 - First Player, 1 - Second Player
 
-dice = Math.floor(Math.random() * 6) + 1;
+function rollTheDice() {
 
-//console.log(dice)
+    dice = Math.floor(Math.random() * 6) + 1;
+
+    document.querySelector('#current-' + activePlayer).textContent = dice;
+    document.querySelector('.dice').src = 'dice-' + dice + '.png';
+
+    if (dice === 6 && activePlayer === 0) {
+
+        document.querySelector('#current-' + activePlayer).textContent = 0;
+        activePlayer = 1;
+        toggleClass(activePlayer)
+
+    } else if (dice === 6 && activePlayer === 1){
+
+        document.querySelector('#current-' + activePlayer).textContent = 0;
+        activePlayer = 0;
+        toggleClass(activePlayer)
+    } 
+       
+
+}
+
+function toggleClass(activePlayer) {
+
+    document.getElementsByClassName('player-' + activePlayer + '-panel').classList.remove("active");
+
+}
+
+document.getElementById('dice-roll').addEventListener('click', rollTheDice);
