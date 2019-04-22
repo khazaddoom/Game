@@ -9,7 +9,7 @@ GAME RULES:
 
 */
 
-var scores, roundScore, activePlayer, dice;
+var scores, roundScore, activePlayer, diceRolledValue, diceDOM;
 
 gameInitilize();
 
@@ -22,7 +22,9 @@ function gameInitilize() {
     roundScore = 0;
     activePlayer = 0;//0 - First Player, 1 - Second Player
 
-    document.querySelector('.dice').style.display = 'none';
+    //Initially hide the dice
+    diceDOM = document.querySelector('.dice');
+    diceDOM.style.display = 'none';
 
     //Current Scores to 0
     document.querySelector('#current-0').textContent = 0;
@@ -36,19 +38,19 @@ function gameInitilize() {
 
 function rollTheDice() {
 
-    dice = Math.floor(Math.random() * 6) + 1;
+    diceRolledValue = Math.floor(Math.random() * 6) + 1;
 
-    if (dice === 6 && activePlayer === 0) {
+    if (diceRolledValue === 1 && activePlayer === 0) {
         removeClassActive(activePlayer);
-        document.querySelector('.dice').style.display = 'none'
+        diceDOM.style.display = 'none'
         document.querySelector('#current-' + activePlayer).textContent = 0;
         activePlayer = 1;
         roundScore = 0;
         addClassActive(activePlayer);
 
-    } else if (dice === 6 && activePlayer === 1){
+    } else if (diceRolledValue === 1 && activePlayer === 1){
         removeClassActive(activePlayer);
-        document.querySelector('.dice').style.display = 'none';
+        diceDOM.style.display = 'none';
         document.querySelector('#current-' + activePlayer).textContent = 0;
         activePlayer = 0;
         roundScore = 0;
@@ -56,10 +58,10 @@ function rollTheDice() {
 
     } else {
 
-        roundScore += dice;
-        document.querySelector('.dice').style.display = 'block';
+        roundScore += diceRolledValue;
+        diceDOM.style.display = 'block';
         document.querySelector('#current-' + activePlayer).textContent = roundScore;
-        document.querySelector('.dice').src = 'dice-' + dice + '.png';
+        diceDOM.src = 'dice-' + diceRolledValue + '.png';
 
     }
 
@@ -81,8 +83,12 @@ function removeClassActive() {
 
 function hold() {
 
+    diceDOM.style.display = 'none';
     scores[activePlayer] += roundScore;
+    roundScore = 0;
     document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
+    removeClassActive(activePlayer);
+    document.querySelector('#current-' + activePlayer).textContent = 0;
 
 
     if (activePlayer === 0)
@@ -90,5 +96,6 @@ function hold() {
     else
         activePlayer = 0;
     
+    addClassActive(activePlayer);
 
 }
