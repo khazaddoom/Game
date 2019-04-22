@@ -15,6 +15,8 @@ gameInitilize();
 
 document.getElementById('dice-roll').addEventListener('click', rollTheDice);
 
+document.querySelector('.btn-hold').addEventListener('click', hold);
+
 function gameInitilize() {
     scores = [0, 0];
     roundScore = 0;
@@ -50,7 +52,7 @@ function rollTheDice() {
         document.querySelector('#current-' + activePlayer).textContent = 0;
         activePlayer = 0;
         roundScore = 0;
-        addClassActive(activePlayer);
+        addClassActive();
 
     } else {
 
@@ -65,14 +67,28 @@ function rollTheDice() {
     
 }
 
-function addClassActive(activePlayer) {
+function addClassActive() {
 
     document.getElementById('player-' + activePlayer).classList.add("active");
 }
 
-function removeClassActive(activePlayer) {
+function removeClassActive() {
 
     document.getElementById('player-' + activePlayer).classList.remove("active");
 
 }
 
+
+function hold() {
+
+    scores[activePlayer] += roundScore;
+    document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
+
+
+    if (activePlayer === 0)
+        activePlayer = 1;
+    else
+        activePlayer = 0;
+    
+
+}
