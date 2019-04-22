@@ -9,16 +9,17 @@ GAME RULES:
 
 */
 
-var scores, roundScore, activePlayer, diceRolledValue, diceDOM;
+var scores, roundScore, activePlayer, diceRolledValue, diceDOM, potentialScore;
 
 gameInitilize();
 
-document.getElementById('dice-roll').addEventListener('click', rollTheDice);
+document.getElementById('dice-roll').addEventListener('click', handleDiceRoll);
 
-document.querySelector('.btn-hold').addEventListener('click', hold);
+document.querySelector('.btn-hold').addEventListener('click', handleHoldButtonClick);
 
 function gameInitilize() {
     scores = [0, 0];
+    potentialScore = 0;
     roundScore = 0;
     activePlayer = 0;//0 - First Player, 1 - Second Player
 
@@ -36,27 +37,31 @@ function gameInitilize() {
 
 }
 
-function rollTheDice() {
+function handleDiceRoll() {
 
     diceRolledValue = Math.floor(Math.random() * 6) + 1;
 
-    if (diceRolledValue === 1 && activePlayer === 0) {
-        removeClassActive(activePlayer);
+    
+
+    if (diceRolledValue === 1) {
+        removeClassActive();
+        roundScore = 0;
         diceDOM.style.display = 'none'
         document.querySelector('#current-' + activePlayer).textContent = 0;
-        activePlayer = 1;
-        roundScore = 0;
-        addClassActive(activePlayer);
-
-    } else if (diceRolledValue === 1 && activePlayer === 1){
-        removeClassActive(activePlayer);
-        diceDOM.style.display = 'none';
-        document.querySelector('#current-' + activePlayer).textContent = 0;
-        activePlayer = 0;
-        roundScore = 0;
+        
+        if (activePlayer === 0) activePlayer = 1;
+        else activePlayer = 0;
+        
         addClassActive();
+    }
+    else {
 
-    } else {
+        potentialScore = scores[activePlayer] + roundScore + diceRolledValue;
+
+        if (potentialScore >= 20) {
+            alert('Player' + activePlayer + ' wins!!!');
+
+        }
 
         roundScore += diceRolledValue;
         diceDOM.style.display = 'block';
@@ -81,15 +86,14 @@ function removeClassActive() {
 }
 
 
-function hold() {
+function handleHoldButtonClick() {
 
     diceDOM.style.display = 'none';
     scores[activePlayer] += roundScore;
+    potentialScore = 0;
     roundScore = 0;
-    document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
-    removeClassActive(activePlayer);
-    document.querySelector('#current-' + activePlayer).textContent = 0;
-
+    
+    setActivePlayerScore();
 
     if (activePlayer === 0)
         activePlayer = 1;
@@ -98,4 +102,11 @@ function hold() {
     
     addClassActive(activePlayer);
 
+}
+
+function setActivePlayerScore() {
+
+    document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
+    removeClassActive(activePlayer);
+    document.querySelector('#current-' + activePlayer).textContent = 0;
 }
